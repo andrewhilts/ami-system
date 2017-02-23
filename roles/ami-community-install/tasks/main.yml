@@ -1,25 +1,25 @@
-# - name: Create web root
-#   file: path={{webRoot}}{{amiCommunityLocalPath}} mode=0775 owner={{ unix_user }} group=www-data state=directory
-#   sudo: yes
+- name: Create web root
+  file: path={{webRoot}}{{amiCommunityLocalPath}} mode=0775 owner={{ unix_user }} group=www-data state=directory
+  sudo: yes
 
-# ## Check out Git code
-# - name: check out AMI Community
-#   git: 
-#     repo={{amiCommunityRepo}}
-#     version={{amiCommunityBranch}}
-#     dest={{webRoot}}{{amiCommunityLocalPath}}
+## Check out Git code
+- name: check out AMI Community
+  git: 
+    repo={{amiCommunityRepo}}
+    version={{amiCommunityBranch}}
+    dest={{webRoot}}{{amiCommunityLocalPath}}
 
-# - name: Create configuration directory
-#   file: path={{webRoot}}{{amiCommunityLocalPath}}/conf mode=0775 owner={{ unix_user }} group=www-data state=directory
-#   sudo: yes
+- name: Create configuration directory
+  file: path={{webRoot}}{{amiCommunityLocalPath}}/conf mode=0775 owner={{ unix_user }} group=www-data state=directory
+  sudo: yes
 
-# - name: Copy over database config
-#   template: src=db.conf.js.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/conf/db.conf.js owner={{ unix_user }} group=www-data
-#   sudo: yes
+- name: Copy over database config
+  template: src=db.conf.js.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/conf/db.conf.js owner={{ unix_user }} group=www-data
+  sudo: yes
 
-# - name: Copy over SendGrid config
-#   template: src=sendgrid.conf.js.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/conf/sendgrid.conf.js owner={{ unix_user }} group=www-data
-#   sudo: yes
+- name: Copy over SendGrid config
+  template: src=sendgrid.conf.js.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/conf/sendgrid.conf.js owner={{ unix_user }} group=www-data
+  sudo: yes
 
 - name: Copy over Policy config
   template: src=policy.conf.js.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/conf/policy.conf.js owner={{ unix_user }} group=www-data
@@ -32,43 +32,43 @@
   template: src=lang.conf.js.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/conf/lang/{{ item.lang }}.conf.js owner={{ unix_user }} group=www-data
   with_items: " {{ amiCommunityLanguages }}"
 
-# - name: use node version
-#   shell: source ~/.profile && nvm use {{node_version}}
-#   args:
-#      executable: /bin/bash
+- name: use node version
+  shell: source ~/.profile && nvm use {{node_version}}
+  args:
+     executable: /bin/bash
 
-# - name: install node plugins
-#   shell: source ~/.profile && npm install
-#   args:
-#     executable: /bin/bash
-#     chdir: "{{webRoot}}{{amiCommunityLocalPath}}"
+- name: install node plugins
+  shell: source ~/.profile && npm install
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiCommunityLocalPath}}"
 
-# - stat: path=/home/{{ unix_user }}/ami-community.sh
-#   register: lauch_exists
+- stat: path=/home/{{ unix_user }}/ami-community.sh
+  register: lauch_exists
 
-# - name: Copying AMI community launch script
-#   template: src=amicommunity.sh.j2 dest=/home/{{ unix_user }}/ami-community.sh mode=0777 owner={{unix_user}} group=www-data
-#   sudo: yes
-#   when: lauch_exists.stat.exists == False
+- name: Copying AMI community launch script
+  template: src=amicommunity.sh.j2 dest=/home/{{ unix_user }}/ami-community.sh mode=0777 owner={{unix_user}} group=www-data
+  sudo: yes
+  when: lauch_exists.stat.exists == False
 
-# - name: install database
-#   shell: source ~/.profile && node install.js
-#   args:
-#     executable: /bin/bash
-#     chdir: "{{webRoot}}{{amiCommunityLocalPath}}/database"
+- name: install database
+  shell: source ~/.profile && node install.js
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiCommunityLocalPath}}/database"
 
-# - name: set up amicommunity node service
-#   template: src=amicommunity.conf dest=/etc/init/amicommunity.conf
-#   sudo: yes
+- name: set up amicommunity node service
+  template: src=amicommunity.conf dest=/etc/init/amicommunity.conf
+  sudo: yes
 
-# - name: set up amicommunity monit script
-#   template: src=amicommunity dest=/etc/monit/conf.d/amicommunity mode=0700
-#   sudo: yes
+- name: set up amicommunity monit script
+  template: src=amicommunity dest=/etc/monit/conf.d/amicommunity mode=0700
+  sudo: yes
 
-# - name: start amicommunity service
-#   service: name=amicommunity state=started enabled=yes
-#   sudo: yes
+- name: start amicommunity service
+  service: name=amicommunity state=started enabled=yes
+  sudo: yes
 
-# - name: restart amicommunity service
-#   service: name=amicommunity state=restarted enabled=yes
-#   sudo: yes
+- name: restart amicommunity service
+  service: name=amicommunity state=restarted enabled=yes
+  sudo: yes
