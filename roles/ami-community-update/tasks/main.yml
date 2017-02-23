@@ -1,0 +1,21 @@
+## Check out Git code
+- name: check out AMI Community
+  git: 
+    repo={{amiCommunityRepo}}
+    version={{amiCommunityBranch}}
+    dest={{webRoot}}{{amiCommunityLocalPath}}
+
+- name: use node version
+  shell: source ~/.profile && nvm use {{node_version}}
+  args:
+     executable: /bin/bash
+
+- name: install node plugins
+  shell: source ~/.profile && npm install
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiCommunityLocalPath}}"
+
+- name: restart amicommunity service
+  service: name=amicommunity state=restarted enabled=yes
+  sudo: yes

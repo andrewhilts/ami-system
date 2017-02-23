@@ -1,0 +1,5 @@
+---
+- name: AMI Community Tools
+  hosts: all
+  roles:
+    - ami-community-install

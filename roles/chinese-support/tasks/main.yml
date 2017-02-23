@@ -1,0 +1,11 @@
+- name: install Chinese fonts
+  apt: name={{item}} state=installed
+  with_items:
+    - fonts-wqy-microhei
+    - ttf-wqy-microhei
+    - fonts-wqy-zenhei
+    - ttf-wqy-zenhei
+
+- name: update font cache
+  command: fc-cache -f -v
+  sudo: yes

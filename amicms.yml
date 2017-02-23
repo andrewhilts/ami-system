@@ -1,0 +1,12 @@
+---
+- name: AMI CMS
+  hosts: all
+
+  roles:
+    - role: wordpress-host
+      domain: '{{apiHostname}}'
+      sudo: yes
+    - {role: amicms-db, mode: 'restore', sudo: yes}
+    - {role: amicms-files, mode: 'restore', sudo: yes}
+    - role: amicms
+      domain: '{{apiHostname}}'

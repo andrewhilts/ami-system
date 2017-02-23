@@ -1,0 +1,16 @@
+# Copy database dump file to remote host and restore it to database 'my_db'
+- copy: src=amicms-backup.sql.gz dest=/tmp
+- mysql_db: name={{wpdb_name}} state=import target=/tmp/amicms-backup.sql.gz 
+- unarchive: src=files.tar.gz dest=/tmp
+- template: src=migration.sql.j2 dest=/tmp/migration.sql
+- shell: mysql --user={{wpdb_user}} --password={{wpdb_pass}} {{wpdb_name}} < /tmp/migration.sql
+  args:
+    executable: /bin/bash
+- stat: path={{webRoot}}{{apiLocalPath}}/public/wp-config.php
+  register: wp_config_exists
+- command: wp option update 'admin_email' {{amicms_admin_email}} --path={{webRoot}}{{apiLocalPath}}/public
+  sudo: no
+  when: wp_config_exists.stat.exists == True
+- command: wp user update 6 --user_pass={{amicms_admin_user_password}} --user_email={{amicms_admin_email}} --path={{webRoot}}{{apiLocalPath}}/public
+  sudo: no
+  when: wp_config_exists.stat.exists == True

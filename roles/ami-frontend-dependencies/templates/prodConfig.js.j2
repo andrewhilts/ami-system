@@ -1,0 +1,13 @@
+module.exports = {
+	options: {
+		apiDomain: "{{default_protocol}}://{{apiHostname}}",
+		apiRoot: "",
+		apiPath: "/wp-json/amicms",
+		enrollmentDomain: "{{default_protocol}}://{{apiHostname}}",
+		enrollmentApiPath: "/notifications",
+		jurisdictionID: {{amiFrontEndJurisdiction}}, // HK is 33,CA 18
+		languageCode: "{{amiFrontEndLang}}",
+		supportedLanguages: [{% for item in amiFrontEndSupportedLangs %}"{{item}}"{% if not loop.last %},{% endif %}{% endfor %}],
+		paperSize: "{{amiFrontEndPaperSize}}" // Can be letter, legal or A4
+	}
+}

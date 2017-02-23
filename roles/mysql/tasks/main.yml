@@ -1,0 +1,16 @@
+- name: install basic packages
+  when: uptodate|success
+  apt: name={{item}} state=installed
+  with_items:
+    - mysql-server
+    - python-mysqldb
+  register: mysqlinstalled
+
+- name: Create Mysql configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+  notify: 
+  - restart mysql
+
+- name: Start Mysql Service
+  when: mysqlinstalled|success
+  service: name=mysql state=started enabled=yes

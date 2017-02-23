@@ -1,0 +1,13 @@
+---
+- name: AMI frontend
+  hosts: all
+
+  roles:
+    - ami-frontend
+    - ami-frontend-dependencies
+    - ami-frontend-build
+
+  post_tasks:
+    - name: restart nginx
+      service: name=nginx state=restarted enabled=yes
+      sudo: yes

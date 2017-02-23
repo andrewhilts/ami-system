@@ -1,0 +1,6 @@
+# Archives uploads
+- shell: tar -zcvf /tmp/uploads.tar.gz uploads
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{apiLocalPath}}/public/wp-content/"
+- fetch: src=/tmp/uploads.tar.gz dest=roles/amicms-files/files flat=yes

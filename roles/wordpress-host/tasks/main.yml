@@ -1,0 +1,120 @@
+---
+  - name: install nginx and curl
+    apt: name={{item}} state=installed
+    with_items:
+      - nginx
+      - nginx-extras
+      - curl
+      - zlibc 
+      - zlib1g 
+      - zlib1g-dev
+      - sendmail
+    register: nginxinstalled
+
+# ###
+# ### NGINX CONFIG STUFF
+# ###
+
+  - name: Disable default site
+    when: nginxinstalled|success
+    register: defaultsitedisabled
+    file: dest=/etc/nginx/sites-enabled/default state=absent
+
+  - name: Add site Config
+    notify: restart nginx
+    register: siteconfig
+    template: src=site.conf.j2 dest=/etc/nginx/sites-available/{{ domain }}.conf owner=root group=root
+
+  - name: Copy over nginx includes
+    when: nginxinstalled|success
+    copy: src=includes dest=/etc/nginx/
+
+  - name: create a wordpress user
+    user: name={{ unix_user }} group=www-data generate_ssh_key=yes
+
+  - name: Copy nginx config
+    when: nginxinstalled|success
+    copy: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root
+
+  - name: Create web root
+    when: nginxinstalled|success
+    file: path=/var/www/{{ apiLocalPath }}/public mode=775 owner={{ unix_user }} group=www-data state=directory
+
+
+###
+### WP DATABASE SETUP STUFF
+###
+
+  - name: Create WP database if needed
+    mysql_db: db={{ wpdb_name }} state=present
+
+  - name: Create WP database user if needed
+    mysql_user: user={{ wpdb_user }} password={{ wpdb_pass }} priv={{ wpdb_name }}.*:ALL state=present
+
+###
+### WP-CLI STUFF
+###
+
+  - name: download wp-cli
+    command: curl -o wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    args:
+      chdir: /usr/local/bin
+      creates: /usr/local/bin/wp
+
+  - name: set permission on wp-cli
+    file: path=/usr/local/bin/wp mode=755
+    register: wpcliinstalled
+
+
+###
+### SITE FILE COPY STUFF
+###
+
+  - name: download wordpress core
+    command: sudo -u {{ unix_user }} -i -- wp core download --path=/var/www/{{apiLocalPath}}/public
+    args:
+      creates: /var/www/{{apiLocalPath}}/public/wp-activate.php
+    register: wp_downloaded
+
+  - name: Copy filler site
+    template: src=index.html.j2 dest=/var/www/{{apiLocalPath}}/public/index.html owner=www-data group=www-data
+
+  - name: Set wp-content as group writeable
+    command: chmod -R 775 /var/www/{{apiLocalPath}}/public/wp-content/
+    sudo: yes
+    when: wp_downloaded
+###
+### SSL CERT STUFF
+###
+
+  - name: Copying SSL cert
+    copy: src=cert/site.crt dest=/etc/ssl/certs/{{ domain }}.crt mode=0777 owner=root
+
+  - name: Copying SSL key
+    copy: src=cert/site.key dest=/etc/ssl/private/{{ domain }}.key mode=0600 owner=root group=root
+
+  - name: Copying dhparam.pem for PFS
+    copy: src=cert/dhparam.pem dest=/etc/ssl/certs/dhparam.pem mode=0777 owner=root
+
+###
+### REST
+###
+
+  - name: Enable site
+    when: siteconfig|success
+    register: siteenabled
+    file: src=/etc/nginx/sites-available/{{ domain }}.conf dest=/etc/nginx/sites-enabled/{{ domain }}.conf state=link force=yes
+
+  - name: uninstall apache (if installed)
+    when: siteenabled|success
+    apt: name=apache2 state=absent
+    register: apacheuninstalled
+    notify: 
+    - restart nginx
+
+  # - name: Add varnish ssl support to wp-config.php
+  #   shell: echo "if (\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){\$_SERVER['HTTPS']='on';}" >> wp-config.php
+  #   args:
+  #     executable: /bin/bash
+  #     chdir: "{{webRoot}}{{apiLocalPath}}/public/"
+

@@ -1,0 +1,43 @@
+###
+### SSL CERT STUFF
+###
+
+- name: Copying SSL cert
+  copy: src=cert/site.crt dest=/etc/ssl/certs/{{ frontEndHostname }}.crt mode=0777 owner=root
+  sudo: yes
+
+- name: Copying SSL key
+  copy: src=cert/site.key dest=/etc/ssl/private/{{ frontEndHostname }}.key mode=0600 owner=root group=root
+  sudo: yes
+
+- name: Copying dhparam.pem for PFS
+  copy: src=cert/dhparam.pem dest=/etc/ssl/certs/dhparam.pem mode=0777 owner=root
+  sudo: yes
+
+- name: Create web root
+  file: path={{webRoot}}{{amiLocalPath}} mode=775 owner={{ unix_user }} group=www-data state=directory
+  sudo: yes
+
+- name: check out AMI
+  git: 
+    repo={{amiFrontEndRepo}}
+    version={{amiFrontEndBranch}}
+    dest={{webRoot}}{{amiLocalPath}}
+
+- name: Add live site Config
+  template: src=live-site.conf.j2 dest=/etc/nginx/sites-available/{{ frontEndHostname }}.conf owner=root group=root
+  notify: restart nginx
+  sudo: yes
+  when: amiFrontEndGruntServe
+
+- name: Add built site Config
+  template: src=site.conf.j2 dest=/etc/nginx/sites-available/{{ frontEndHostname }}.conf owner=root group=root
+  notify: restart nginx
+  sudo: yes
+  when: not amiFrontEndGruntServe
+
+
+- name: Enable Site
+  file: src=/etc/nginx/sites-available/{{ frontEndHostname }}.conf dest=/etc/nginx/sites-enabled/{{ frontEndHostname }}.conf state=link force=yes
+  notify: restart nginx
+  sudo: yes

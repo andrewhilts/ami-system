@@ -1,0 +1,15 @@
+---
+- name: AMI frontend update
+  hosts: all
+
+  pre_tasks:
+    - name: check out AMI
+      git: 
+        repo={{amiFrontendRepo}}
+        version={{amiFrontEndBranch}}
+        dest={{webRoot}}{{amiLocalPath}}
+    - 
+
+  roles:
+    - ami-frontend-dependencies
+    - ami-frontend-build

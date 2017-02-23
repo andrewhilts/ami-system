@@ -1,0 +1,13 @@
+var language = {
+	{% for key, value in item.iteritems() %}
+	{{key}}: "{{value}}"{% if not loop.last %},{% endif %}
+
+	{% endfor %}
+}
+exports.addLanguageToPolicy = function(policy){
+	if(typeof policy.languages == "undefined"){
+		policy.languages = {};
+	}
+	policy.languages["{{ item.lang }}"] = language;
+	return policy;
+}

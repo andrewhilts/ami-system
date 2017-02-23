@@ -1,0 +1,35 @@
+- name: install NVM {{node_version}}
+  shell: source ~/.profile && nvm install {{node_version}}
+  args:
+     executable: /bin/bash
+
+- name: use NVM {{node_version}}
+  shell: source ~/.profile && nvm use {{node_version}}
+  args:
+     executable: /bin/bash
+
+- name: install grunt-cli & bower
+  shell: source ~/.profile && npm install -g grunt-cli bower
+  args:
+     executable: /bin/bash
+
+- name: install node plugins
+  shell: source ~/.profile && npm install
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiLocalPath}}"
+
+- name: install bower plugins
+  shell: source ~/.profile && bower install
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiLocalPath}}"
+
+- name: Add frontend Config
+  template: src="prodConfig.js.j2" dest="{{webRoot}}{{amiLocalPath}}/app/scripts/modules/config/prodConfig.js"
+
+- name: Add frontend local Config
+  template: src="prodConfig.js.j2" dest="{{webRoot}}{{amiLocalPath}}/app/scripts/modules/config/localConfig.js"
+
+- name: Add frontend dev Config
+  template: src="prodConfig.js.j2" dest="{{webRoot}}{{amiLocalPath}}/app/scripts/modules/config/devConfig.js"

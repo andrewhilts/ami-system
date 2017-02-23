@@ -1,0 +1,3 @@
+# Copy file archive to remote host and restore it
+- unarchive: src=uploads.tar.gz dest={{webRoot}}{{apiLocalPath}}/public/wp-content/
+  sudo: yes

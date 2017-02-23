@@ -1,0 +1,78 @@
+---
+#General
+unix_user: vagrant
+
+#Hostnames
+frontEndHostname: ami.local
+apiHostname: api.ami.local
+enrollmentHostname: api.ami.local
+default_protocol: https
+webRoot: /var/www
+amiFrontEndGruntServe: true
+
+#Database (AMICMS MySQL)
+mysql_root_pass: nothingtoseehere
+wpdb_user: testman
+wpdb_name: testdb
+wpdb_host: localhost
+wpdb_pass: testpassword
+
+#Database (AMICommunity PostGres)
+ami_community_dbname: amicommunity
+ami_community_dbuser: amicommunity
+ami_community_dbpassword: secret
+
+#install paths relative to webRoot
+amiLocalPath: /ami-frontend-source
+apiLocalPath: /api
+amiCommunityLocalPath: /ami-community
+
+#Git Repos
+##AMI Community Tools
+amiCommunityRepo: https://github.com/andrewhilts/ami-community.git
+amiCommunityBranch: master
+
+##AMI CMS API
+amiAPIPluginRepo: https://github.com/andrewhilts/ami-api
+amiAPIPluginBranch: master
+
+##AMI Frontend
+amiFrontEndRepo: https://github.com/andrewhilts/ami.git
+amiFrontEndBranch: canada
+
+#AMI Frontend Settings
+amiFrontEndJurisdiction: 18
+amiFrontEndLang: en
+amiFrontEndSupportedLangs:
+  - "en"
+  - "fr"
+amiFrontEndPaperSize: "letter"
+
+#AMI CMS Settings
+amicms_admin_user_password: yourpasswordhere
+amicms_admin_email: name@host.domain
+
+#AMI Community Settings
+node_version: 5.10.1
+sendGridAPIKey: secret
+amiLogoFileName: AMICAFullLogoWhiteBackground.png
+
+amiCommunityLanguages:
+  - {
+      lang: "en", 
+      logoFileName: "AMICAFullLogoWhiteBackground.png",
+      systemEmailAddress:  "info@accessmyinfo.org",
+      defaultSubjectLine:  "A message from Access My Info",
+      verifySubjectLine:  "Confirm your request: Access My Info",
+      confirmSubjectLine:  "Request confirmed: Access My Info",
+      feedback: "Share your Access My Info results to enter to win $50 Amazon credit"
+    }
+  - {
+      lang: "fr",
+      logoFileName: "AMICAFullLogoWhiteBackground-fr.png",
+      systemEmailAddress:  "info@accessmyinfo.org",
+      defaultSubjectLine:  "Message : Obtenir mes infos",
+      verifySubjectLine:  "Confirmez votre demande : Obtenir mes infos",
+      confirmSubjectLine:  "Demande confirmée : Obtenir mes infos",
+      feedback: "Partagez vos résultats Obtenir mes infos pour gagner 50$ de crédit Amazon"
+    }

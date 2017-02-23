@@ -1,0 +1,21 @@
+---
+- name: install apt-transport packages
+  apt: name=apt-transport-https state=installed
+- name: Add varnish key to apt
+  shell: curl https://repo.varnish-cache.org/ubuntu/GPG-key.txt | apt-key add -
+  args:
+    executable: /bin/bash
+  sudo: yes
+- name: Add varnish repo to apt sources
+  shell: sh -c 'echo "deb https://repo.varnish-cache.org/ubuntu/ trusty varnish-4.0" >> /etc/apt/sources.list.d/varnish-cache.list'
+  args:
+    executable: /bin/bash
+  sudo: yes
+- name: update server cache 
+  apt: update_cache=yes
+- name: install varnish package
+  apt: name=varnish state=installed
+- name: Copy over Varnish config
+  copy: src=default.vcl dest=/etc/varnish/default.vcl mode=0744
+  notify: 
+    - restart varnish

@@ -1,0 +1,13 @@
+---
+- name: AMI Restore
+  hosts: all
+  sudo: yes
+
+  roles:
+    - {role: amicms-files, mode: 'restore'}
+    - {role: amicms-db, mode: 'restore'}
+    - role: ami-community-db
+      mode: restore
+      dbname: '{{ami_community_dbname}}'
+      dbuser: '{{ami_community_dbuser}}'
+      dbpassword: '{{ami_community_dbpassword}}'

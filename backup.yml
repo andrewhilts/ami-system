@@ -1,0 +1,12 @@
+---
+- name: AMI Backup
+  hosts: all
+
+  roles:
+    - {role: amicms-files, mode: 'backup'}
+    # - {role: amicms-db, mode: 'backup'}
+    - role: ami-community-db
+      mode: backup
+      dbname: '{{ami_community_dbname}}'
+      dbuser: '{{ami_community_dbuser}}'
+      dbpassword: '{{ami_community_dbpassword}}'

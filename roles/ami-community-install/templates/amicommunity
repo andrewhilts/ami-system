@@ -1,0 +1,7 @@
+check host {{enrollmentHostname}} with address {{enrollmentHostname}}
+    start program = "/sbin/start amicommunity"
+    stop program  = "/sbin/stop amicommunity"
+    if failed
+        port 443 protocol HTTPS
+        request "/notifications/verify"
+    then start

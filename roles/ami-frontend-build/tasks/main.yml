@@ -1,0 +1,42 @@
+- name: use NVM {{node_version}}
+  shell: source ~/.profile && nvm use {{node_version}}
+  args:
+     executable: /bin/bash
+
+- name: build AMI Frontend
+  shell: source ~/.profile && bower install && grunt build
+  when: not amiFrontEndGruntServe
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiLocalPath}}"
+
+- name: replace AMI Frontend in prod
+  shell: source ~/.profile && rm -rf ./prod && mv ./dist ./prod
+  when: not amiFrontEndGruntServe
+  args:
+    executable: /bin/bash
+    chdir: "{{webRoot}}{{amiLocalPath}}"
+
+- stat: path=/home/{{ unix_user }}/amifrontend.sh
+  when: amiFrontEndGruntServe == true
+  register: lauch_exists
+
+- name: Copying AMI community launch script
+  template: src=amifrontend.sh.j2 dest=/home/{{ unix_user }}/amifrontend.sh mode=0777 owner={{unix_user}} group=www-data
+  sudo: yes
+  when: lauch_exists.stat.exists == False
+
+- name: set up amifrontend service
+  template: src=amifrontend.conf dest=/etc/init/amifrontend.conf
+  sudo: yes
+  when: amiFrontEndGruntServe == true
+
+- name: start amifrontend service
+  service: name=amifrontend state=started enabled=yes
+  sudo: yes
+  when: amiFrontEndGruntServe == true
+
+- name: restart amifrontend service
+  service: name=amifrontend state=restarted enabled=yes
+  sudo: yes
+  when: amiFrontEndGruntServe == true

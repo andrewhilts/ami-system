@@ -1,0 +1,4 @@
+# Dumps database to amicms-backup
+- mysql_db: state=dump name={{wpdb_name}} target=/tmp/amicms-backup.sql.gz login_user={{wpdb_user}} login_password={{wpdb_pass}}
+  sudo: yes
+- fetch: src=/tmp/amicms-backup.sql.gz dest=roles/amicms-db/files/amicms-backup.sql.gz flat=yes

@@ -1,0 +1,9 @@
+---
+- name: AMI Install
+  hosts: all
+- include: common.yml
+- include: amicms.yml
+- include: ami-community.yml
+- include: ami-community-install.yml
+- include: ami-frontend.yml
+- include: nginx-restart.yml

@@ -1,0 +1,5 @@
+---
+- name: AMI Community Tools Update
+  hosts: all
+  roles:
+    - ami-community-update

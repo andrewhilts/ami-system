@@ -1,0 +1,17 @@
+---
+- name: AMI Community Tools Dependencies
+  sudo: yes
+  sudo_user: postgres
+  hosts: all
+
+  roles:
+    - role: ami-community-db
+      mode: install
+      dbname: '{{ami_community_dbname}}'
+      dbuser: '{{ami_community_dbuser}}'
+      dbpassword: '{{ami_community_dbpassword}}'
+
+  post_tasks:
+  - name: restart nginx
+    service: name=nginx state=restarted enabled=yes
+    sudo: yes

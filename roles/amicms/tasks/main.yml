@@ -1,0 +1,24 @@
+- name: Copy wp config
+  template: src=wp-config.php.j2 dest={{webRoot}}{{apiLocalPath}}/public/wp-config.php owner={{unix_user}} group=www-data
+  sudo: yes
+
+- name: update wp cli
+  command: wp cli update --nightly --allow-root --yes
+  sudo: yes
+
+- name: install plugins (ignore errors)
+  command: wp plugin install regenerate-thumbnails advanced-custom-fields acf-qtranslate custom-post-type-ui qtranslate-x raw-html-snippets json-rest-api w3-total-cache https://github.com/PanMan/WP-JSON-API-ACF/archive/master.zip {{amiAPIPluginRepo}}/archive/{{amiAPIPluginBranch}}.zip --path={{webRoot}}{{apiLocalPath}}/public --activate
+  ignore_errors: yes
+
+- name: activate custom plugins
+  command: wp plugin activate ami-api WP-JSON-API-ACF --path={{webRoot}}{{apiLocalPath}}/public 
+  ignore_errors: yes
+
+- name: install plugins (ignore errors)
+  command: wp plugin install advanced-custom-fields acf-qtranslate custom-post-type-ui qtranslate-x raw-html-snippets json-rest-api w3-total-cache https://github.com/PanMan/WP-JSON-API-ACF/archive/master.zip {{amiAPIPluginRepo}}/archive/{{amiAPIPluginBranch}}.zip --path={{webRoot}}{{apiLocalPath}}/public --activate
+  ignore_errors: yes
+
+- command: wp option update 'admin_email' {{amicms_admin_email}} --path={{webRoot}}{{apiLocalPath}}/public
+  sudo: no
+- command: wp user update 6 --user_pass={{amicms_admin_user_password}} --path={{webRoot}}{{apiLocalPath}}/public
+  sudo: no
