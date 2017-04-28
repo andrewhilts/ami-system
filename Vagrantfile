@@ -17,7 +17,7 @@ Vagrant.configure(2) do |config|
 
 	# vbox specific config
 	config.vm.provider "virtualbox" do |v|
-		v.name = "AMIAMI"
+		v.name = "AMI Default"
 		v.memory = 1024
 	end
 
@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
 	# INSTALL STUFF HERE
 	config.vm.provision "ansible" do |ansible|
 		ansible.verbose = "v"
-		ansible.playbook = "backup.yml"
+		ansible.playbook = "setup.yml"
 	end
 
 end

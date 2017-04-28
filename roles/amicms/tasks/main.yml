@@ -7,16 +7,26 @@
   sudo: yes
 
 - name: install plugins (ignore errors)
-  command: wp plugin install regenerate-thumbnails advanced-custom-fields acf-qtranslate custom-post-type-ui qtranslate-x raw-html-snippets json-rest-api w3-total-cache https://github.com/PanMan/WP-JSON-API-ACF/archive/master.zip {{amiAPIPluginRepo}}/archive/{{amiAPIPluginBranch}}.zip --path={{webRoot}}{{apiLocalPath}}/public --activate
+  command: wp plugin install "{{ item }}" --activate --path={{webRoot}}{{apiLocalPath}}/public
   ignore_errors: yes
+  with_items:
+    - "regenerate-thumbnails"
+    - "advanced-custom-fields"
+    - "acf-qtranslate"
+    - "custom-post-type-ui"
+    - "qtranslate-x"
+    - "raw-html-snippets"
+    - "json-rest-api"
+    - "w3-total-cache"
+    - "{{amiAPIPluginRepo}}/archive/{{amiAPIPluginBranch}}.zip"
+    - "https://github.com/PanMan/WP-JSON-API-ACF/archive/master.zip"
 
 - name: activate custom plugins
-  command: wp plugin activate ami-api WP-JSON-API-ACF --path={{webRoot}}{{apiLocalPath}}/public 
+  command: wp plugin activate "{{ item }}" --path={{webRoot}}{{apiLocalPath}}/public 
   ignore_errors: yes
-
-- name: install plugins (ignore errors)
-  command: wp plugin install advanced-custom-fields acf-qtranslate custom-post-type-ui qtranslate-x raw-html-snippets json-rest-api w3-total-cache https://github.com/PanMan/WP-JSON-API-ACF/archive/master.zip {{amiAPIPluginRepo}}/archive/{{amiAPIPluginBranch}}.zip --path={{webRoot}}{{apiLocalPath}}/public --activate
-  ignore_errors: yes
+  with_items:
+    - "ami-api"
+    - "WP-JSON-API-ACF"
 
 - command: wp option update 'admin_email' {{amicms_admin_email}} --path={{webRoot}}{{apiLocalPath}}/public
   sudo: no

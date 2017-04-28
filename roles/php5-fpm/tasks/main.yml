@@ -14,4 +14,3 @@
     copy: src=php.ini dest=/etc/php5/fpm/php.ini mode=0644 owner=root
     notify:
     - restart php5-fpm
-    - restart nginx
