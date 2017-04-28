@@ -1,8 +1,18 @@
+- name: install setfacl support
+  sudo: yes
+  apt: pkg=acl
+
 - name: ensure database is created
   postgresql_db: name={{dbname}} state=present login_user=postgres
+  become: yes
+  become_user: postgres
 
 - name: ensure user has access to database
   postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+  become: yes
+  become_user: postgres
 
 - name: ensure user does not have unnecessary privilege
   postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  become: yes
+  become_user: postgres

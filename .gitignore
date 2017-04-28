@@ -8,6 +8,6 @@ roles/wordpress-host/files/cert/site*
 roles/wordpress-host/files/cert/dhparam*
 roles/ami-frontend/files/cert/site*
 roles/ami-frontend/files/cert/dhparam*
-roles/amicms-db/files/*
-roles/amicms-files/files/*
-roles/ami-community-db/files/*
+roles/amicms-db/files/amicms-backup.sql.gz
+roles/amicms-files/files/uploads.tar.gz
+roles/ami-community-db/files/amicommunity-backup.sql.gz

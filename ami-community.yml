@@ -1,8 +1,7 @@
 ---
 - name: AMI Community Tools Dependencies
-  sudo: yes
-  sudo_user: postgres
   hosts: all
+  sudo: yes
 
   roles:
     - role: ami-community-db

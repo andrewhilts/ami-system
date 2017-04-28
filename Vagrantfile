@@ -17,17 +17,17 @@ Vagrant.configure(2) do |config|
 
 	# vbox specific config
 	config.vm.provider "virtualbox" do |v|
-		v.name = "AMI"
+		v.name = "AMIAMI"
 		v.memory = 1024
 	end
 
 	# Sync ami files for editing
-	config.vm.synced_folder "ami-code", "/var/www"
+	config.vm.synced_folder "ami-code", "/var/www",owner: "vagrant", group: "www-data", mount_options: ["dmode=775,fmode=775"]
 
 	# INSTALL STUFF HERE
 	config.vm.provision "ansible" do |ansible|
 		ansible.verbose = "v"
-		ansible.playbook = "restore.yml"
+		ansible.playbook = "backup.yml"
 	end
 
 end

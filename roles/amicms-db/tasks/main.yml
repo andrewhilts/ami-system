@@ -4,3 +4,6 @@
 - include: restore.yml 
   when: mode == "restore"
   sudo: yes
+- include: install.yml 
+  when: mode == "install"
+  sudo: yes

@@ -41,11 +41,11 @@ amiFrontEndRepo: https://github.com/andrewhilts/ami.git
 amiFrontEndBranch: canada
 
 #AMI Frontend Settings
-amiFrontEndJurisdiction: 18
+amiFrontEndJurisdiction: 363
 amiFrontEndLang: en
 amiFrontEndSupportedLangs:
   - "en"
-  - "fr"
+  - "el"
 amiFrontEndPaperSize: "letter"
 
 #AMI CMS Settings

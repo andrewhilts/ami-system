@@ -1,0 +1,8 @@
+---
+- name: AMI Restore
+  hosts: all
+  sudo: yes
+
+  roles:
+    - {role: amicms-files, mode: 'install'}
+    - {role: amicms-db, mode: 'install'}

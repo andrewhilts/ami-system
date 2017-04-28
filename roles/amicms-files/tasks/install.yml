@@ -1,0 +1,9 @@
+# Copy file archive to remote host and restore it
+- unarchive: src=uploads-default.tar.gz dest={{webRoot}}{{apiLocalPath}}/public/wp-content/
+  sudo: yes
+- name: stat uploads-default
+  stat: path=/path/to/foo
+  register: uploads_default_stat
+- name: Move uploads-default to uploads
+  command: mv {{webRoot}}{{apiLocalPath}}/public/wp-content/uploads-default {{webRoot}}{{apiLocalPath}}/public/wp-content/uploads
+  when: uploads_default_stat.stat.exists

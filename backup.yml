@@ -4,7 +4,7 @@
 
   roles:
     - {role: amicms-files, mode: 'backup'}
-    # - {role: amicms-db, mode: 'backup'}
+    - {role: amicms-db, mode: 'backup'}
     - role: ami-community-db
       mode: backup
       dbname: '{{ami_community_dbname}}'
