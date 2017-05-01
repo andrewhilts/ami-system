@@ -38,7 +38,7 @@ amiAPIPluginBranch: master
 
 ##AMI Frontend
 amiFrontEndRepo: https://github.com/andrewhilts/ami.git
-amiFrontEndBranch: canada
+amiFrontEndBranch: master
 
 #AMI Frontend Settings
 amiFrontEndJurisdiction: 363
