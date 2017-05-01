@@ -14,5 +14,3 @@ bash generate_dh_param.sh
 cp dhparam.pem ../../../ami-frontend/files/cert/
 cp site* ../../../ami-frontend/files/cert/
 cd ../../../../
-echo "Creating vagrant machine"
-vagrant up

@@ -23,13 +23,13 @@ Make sure you have the following prerequisites installed on your computer:
 * [Ansible](https://www.ansible.com/)
 * [Virtual Box](https://www.virtualbox.org/) (make sure it’s up-to-date)
 
-**To get AMI running for the first time, run `firstrun.sh` in the project directory**
+**To get AMI running for the first time, run `firstrun.sh` then `vagrant up` in the project directory**
 
-You will have to provide some input as the script creates some SSL certificates for you.
+`firstrun.sh` creates security certificates used by your VM. You will have to provide some input to create the certificates.
 
-`firstrun.sh` creates your VM. You  will be to provide your administrator password so that vagrant can edit your hosts file to set up the ami.local domain for your development version of AMI.
+`vagrant up` creates your VM. You  will be to provide your administrator password so that vagrant can edit your hosts file to set up the ami.local domain for your development version of AMI.
 
-If the script fails, run `vagrant provision` and try again. **This is alpha software: some debugging may be required.**
+If `vagrant up` fails, run `vagrant provision` and try again. **This is alpha software: some debugging may be required.**
 
 ## Uninstall
 If you wish to remove your AMI VM, run `vagrant destroy` in the project directory. Do not delete the VM in Virtualbox, as the changes to your hosts file will not be removed.
