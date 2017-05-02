@@ -16,6 +16,7 @@
     - tree
     - ack-grep
     - monit
+    - unzip
   register: basicsinstalled
 
 # firewall stuff here
