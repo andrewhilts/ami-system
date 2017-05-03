@@ -3,12 +3,11 @@
   hosts: all
 
   pre_tasks:
-    - name: check out AMI
+    - name: check out AMI Frontend
       git: 
-        repo={{amiFrontendRepo}}
-        version={{amiFrontEndBranch}}
-        dest={{webRoot}}{{amiLocalPath}}
-    - 
+        repo: "{{ amiFrontEndRepo }}"
+        version: "{{ amiFrontEndBranch }}"
+        dest: "{{ webRoot }}{{ amiLocalPath }}"
 
   roles:
     - ami-frontend-dependencies

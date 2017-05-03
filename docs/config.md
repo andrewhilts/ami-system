@@ -63,7 +63,10 @@ The repos used for each AMI server component. You should fork these repos (at le
 ####AMI Frontend Settings
 * `amiFrontEndJurisdiction`: The ID for the Wordpress post that corresponds to the jurisdiction you'll use for your deployment. Set to 18 for Canada to start with.
 * `amiFrontEndLang`: the 2-letter ISO code for the language you want the UI to default to.
-* `amiFrontEndSupportedLangs`: a YAML list of the 2-letter ISO code for the language you want the UI to support
+* `amiFrontEndSupportedLangs`: A YAML list of objects to denote the different language options available in the frontend. Includes:
+  * `languageCode`: the 2-letter ISO code for the language
+  * `title`: The display name for the language in the UI controls
+  * `languageCodeMoment`: The locale to use for time/date formatting (usually the same as `languageCode`)
 * `amiFrontEndPaperSize`: the paper size that of the PDF that the AMI Frontend generates. Can be letter, legal, or A4.
 
 ####AMI CMS Settings
@@ -74,6 +77,8 @@ The repos used for each AMI server component. You should fork these repos (at le
 * `node_version`: The version of node.js to use in the project (default 5.10.1)
 * `sendgridAPIKey`: API key for sendgrid to send out automated emails
 * `amiLogoFileName`: The filename for the default AMI logo to use in emails. The file will be located in your AMI Frontend project, in the `/images/ami-logo` folder.
+* `email_event_days_to_reminder`: An integer to denote the number of days the system should wait between someone creating a request and sending them an email asking how their request is going.
+* `email_event_days_to_feedback`: An integer to denote the number of days the system should wait between someone creating a request and sending them an email asking for feedback about how their request went (eg include link to survey).
 * `amiCommunityLanguages`: A YAML list of objects to denote language-specific settings for sent emails. Each language object includes:
   * `lang`: The 2-letter ISO code for the language
   * `systemEmailAddress`: The email address that emails will be "from"

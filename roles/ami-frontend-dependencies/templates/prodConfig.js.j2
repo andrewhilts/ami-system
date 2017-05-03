@@ -7,7 +7,17 @@ module.exports = {
 		enrollmentApiPath: "/notifications",
 		jurisdictionID: {{amiFrontEndJurisdiction}}, // HK is 33,CA 18
 		languageCode: "{{amiFrontEndLang}}",
-		supportedLanguages: [{% for item in amiFrontEndSupportedLangs %}"{{item}}"{% if not loop.last %},{% endif %}{% endfor %}],
+		supportedLanguages: [
+			{% for language in amiFrontEndSupportedLangs %}
+{
+{% for key, value in language.iteritems() %}
+	{{key}}: "{{value}}"{% if not loop.last %},
+{% endif %}
+{% endfor %}
+}{% if not loop.last %},
+{% endif %}
+{% endfor %}
+],
 		paperSize: "{{amiFrontEndPaperSize}}" // Can be letter, legal or A4
 	}
 }

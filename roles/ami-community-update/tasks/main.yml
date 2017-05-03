@@ -16,6 +16,13 @@
     executable: /bin/bash
     chdir: "{{webRoot}}{{amiCommunityLocalPath}}"
 
+- name: Create Jurisdiction Event folder
+  file: path={{webRoot}}{{amiCommunityLocalPath}}/jurisdiction_events mode=775 owner={{ unix_user }} group=www-data state=directory
+
+- name: Copy over Jurisdiction Event config
+  template: src=jurisdiction_events.json.j2 dest={{webRoot}}{{amiCommunityLocalPath}}/jurisdiction_events/jurisdiction_events.json owner={{ unix_user }} group=www-data
+  sudo: yes
+
 - name: restart amicommunity service
   service: name=amicommunity state=restarted enabled=yes
   sudo: yes

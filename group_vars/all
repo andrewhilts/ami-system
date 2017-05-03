@@ -44,8 +44,16 @@ amiFrontEndBranch: master
 amiFrontEndJurisdiction: 363
 amiFrontEndLang: en
 amiFrontEndSupportedLangs:
-  - "en"
-  - "el"
+  - {
+      languageCode: "en",
+      title: "English",
+      languageCodeMoment: "en"
+    }
+  - {
+      languageCode: "aa",
+      title: "Elvish",
+      languageCodeMoment: "en"
+    }
 amiFrontEndPaperSize: "letter"
 
 #AMI CMS Settings
@@ -56,6 +64,8 @@ amicms_admin_email: name@host.domain
 node_version: 5.10.1
 sendGridAPIKey: secret
 amiLogoFileName: AMICAFullLogoWhiteBackground.png
+email_event_days_to_reminder: 30
+email_event_days_to_feedback: 60
 
 amiCommunityLanguages:
   - {
